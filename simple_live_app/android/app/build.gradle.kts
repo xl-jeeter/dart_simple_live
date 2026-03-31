@@ -1,10 +1,10 @@
 import java.util.Properties
+import java.io.File
 import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -41,11 +41,10 @@ android {
             if (keystorePropertiesFile.exists()) {
                 keyAlias = keystoreProperties.getProperty("keyAlias") ?: ""
                 keyPassword = keystoreProperties.getProperty("keyPassword") ?: ""
-                storeFile = keystoreProperties.getProperty("storeFile")?.let { java.io.File(it) }
+                storeFile = keystoreProperties.getProperty("storeFile")?.let { File(it) }
                 storePassword = keystoreProperties.getProperty("storePassword") ?: ""
             } else {
-                // Use debug keystore when key.properties doesn't exist
-                storeFile = java.io.File(System.getProperty("user.home"), ".android/debug.keystore")
+                storeFile = File(System.getProperty("user.home"), ".android/debug.keystore")
                 keyAlias = "androiddebugkey"
                 keyPassword = "android"
                 storePassword = "android"
