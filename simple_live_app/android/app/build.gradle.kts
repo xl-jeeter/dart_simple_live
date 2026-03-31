@@ -41,10 +41,12 @@ android {
 
     signingConfigs {
         create("release") {
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
-            storeFile = keystoreProperties["storeFile"]?.let { file(it) }
-            storePassword = keystoreProperties["storePassword"] as String
+            if (keystorePropertiesFile.exists()) {
+                keyAlias = keystoreProperties.getProperty("keyAlias") ?: ""
+                keyPassword = keystoreProperties.getProperty("keyPassword") ?: ""
+                storeFile = keystoreProperties.getProperty("storeFile")?.let { file(it) }
+                storePassword = keystoreProperties.getProperty("storePassword") ?: ""
+            }
             isV1SigningEnabled = true
             isV2SigningEnabled = true
         }
@@ -67,4 +69,11 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // Implementation for Media3 ExoPlayer.
+    implementation("androidx.media3:media3-exoplayer:1.6.0")
+    // Implementation for Media3 ExoPlayer Hls (HLS support).
+    implementation("androidx.media3:media3-exoplayer-hls:1.6.0")
 }
