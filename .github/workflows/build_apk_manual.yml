@@ -25,6 +25,21 @@ jobs:
           flutter-version: "3.38.x"
           cache: true
 
+      - name: Create debug keystore fallback
+        run: |
+          mkdir -p ~/.android
+          keytool -genkeypair \
+            -v \
+            -storetype PKCS12 \
+            -keystore ~/.android/debug.keystore \
+            -alias androiddebugkey \
+            -storepass android \
+            -keypass android \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=Android Debug,O=Android,C=US"
+
       - name: Restore packages
         run: |
           cd simple_live_app
