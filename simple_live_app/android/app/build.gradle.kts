@@ -29,10 +29,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.xycz.simple_live"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -44,8 +41,14 @@ android {
             if (keystorePropertiesFile.exists()) {
                 keyAlias = keystoreProperties.getProperty("keyAlias") ?: ""
                 keyPassword = keystoreProperties.getProperty("keyPassword") ?: ""
-                storeFile = keystoreProperties.getProperty("storeFile")?.let { file(it) }
+                storeFile = keystoreProperties.getProperty("storeFile")?.let { java.io.File(it) }
                 storePassword = keystoreProperties.getProperty("storePassword") ?: ""
+            } else {
+                // Use debug keystore when key.properties doesn't exist
+                storeFile = java.io.File(System.getProperty("user.home"), ".android/debug.keystore")
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+                storePassword = "android"
             }
             isV1SigningEnabled = true
             isV2SigningEnabled = true
@@ -54,12 +57,10 @@ android {
 
     buildTypes {
         release {
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
-                // Default file with automatically generated optimization rules.
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
@@ -72,8 +73,6 @@ flutter {
 }
 
 dependencies {
-    // Implementation for Media3 ExoPlayer.
     implementation("androidx.media3:media3-exoplayer:1.6.0")
-    // Implementation for Media3 ExoPlayer Hls (HLS support).
     implementation("androidx.media3:media3-exoplayer-hls:1.6.0")
 }
