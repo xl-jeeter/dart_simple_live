@@ -59,5 +59,4 @@ jobs:
             simple_live_app/build/app/outputs/flutter-apk/app-x86_64-release.apk
 
       # 完成
-      - run: echo "🍏 APK build status: ${{ job.status }}"
-
+      - run: echo "🍏 APK build done: ${{ job.status }}"
